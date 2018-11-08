@@ -35,7 +35,7 @@
                     <td>'. $data['finish_hour'] .'.'. $data['finish_minute'].'</td>
                     <td>
                       <a href="update.php?id='. $data['id'] .'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;
-                      <a href="destroy.php?id='. $data['id'] .'"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                      <a ';?> onclick="return confirm('are you sure want to delete it?');" <?php echo 'href="controller/destroy-schedule.php?id='. $data['id'] .'"><i class="fa fa-trash" aria-hidden="true"></i></a>
                     </td>
                   </tr>
                 ';
