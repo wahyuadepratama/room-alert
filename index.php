@@ -17,7 +17,7 @@
                 <thead>
                   <tr>
                     <th scope="col">No</th>
-                    <th scope="col">Day</th>
+                    <th scope="col">Course</th>
                     <th scope="col">Start Time</th>
                     <th scope="col">End Time</th>
                   </tr>
@@ -91,7 +91,7 @@
                 if(now.getHours() == val['start_hour'] && now.getMinutes() == val['start_minute'] && now.getSeconds() < 30){
                   play = true;
                   console.log('alarm berbunyi!');
-                  document.getElementById("info").textContent = "Saat ini sedang berlangsung: " + val['name'];
+                  document.getElementById("info").textContent = "Jadwal sekarang: " + val['name'];
                   alertStart();
                 }
                 if(now.getHours() == val['finish_hour'] && now.getMinutes() == val['finish_minute'] && now.getSeconds() < 30){
@@ -106,20 +106,35 @@
                   play = false;
                   console.log('alarm berhenti berbunyi');
                 }
-              }
-              if(now.getHours() == val['finish_hour'] && now.getMinutes() == val['finish_minute'] && now.getSeconds() > 30){
-                play = false;
-                document.getElementById("info").textContent = "Tidak ada kuliah pada jam ini";
-                console.log('alarm berhenti berbunyi');
+                if(now.getHours() == val['finish_hour'] && now.getMinutes() >= val['finish_minute'] && now.getSeconds() > 30){
+                  play = false;
+                  document.getElementById("info").textContent = "Tidak ada kuliah pada jam ini";
+                  console.log('alarm berhenti berbunyi');
+                }
               }
             }
 
             if(days[now.getDay()] == val['day']){
+
               if(now.getHours() >= val['start_hour'] && now.getHours() <= val['finish_hour']){
-                if(now.getHours() == val['start_hour'] && now.getMinutes() >= val['start_minute'] || now.getHours() > val['start_hour'] && now.getHours() < val['finish_hour'] || now.getHours() == val['finish_hour'] && now.getMinutes() < val['finish_minute']){
+                if(now.getHours() == val['start_hour'] && now.getHours() == val['finish_hour']){
+                  if(now.getMinutes() < val['start_minute'] || now.getMinutes() > val['finish_minute']){
+                    console.log('masuk');
+                    document.getElementById("info").textContent = "Tidak ada kuliah pada jam ini";
+                  }
+                }else{
+                  if(now.getHours() == val['start_hour'] && now.getMinutes() >= val['start_minute']){
                     document.getElementById("info").textContent = "Jadwal sekarang: " + val['name'];
+                  }else if(now.getHours() > val['start_hour'] && now.getHours() < val['finish_hour']){
+                    document.getElementById("info").textContent = "Jadwal sekarang: " + val['name'];
+                  }else if(now.getHours() == val['finish_hour'] && now.getMinutes() < val['finish_minute']){
+                    console.log('masuk');
+
+                    document.getElementById("info").textContent = "Jadwal sekarang: " + val['name'];
+                  }
                 }
               }
+
             }
 
           });

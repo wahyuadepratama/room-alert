@@ -7,7 +7,7 @@
   <body>
     <div class="container">
       <div class="row" style="margin-top: 5%">
-        <h3><a href="./">Back Home</a></h3>
+        <h4><a href="./">Back to Home</a></h4>
       </div>
       <div class="row" style="margin-top: 5%">
         <div class="col-md-6">
