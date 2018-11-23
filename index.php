@@ -26,6 +26,15 @@
                   <?php
                   $no = 1;
                   foreach ($allSchedule as $data) {
+
+                    // if($data['start_minute'] < 10){
+                    //   $data['start_minute'] = "0" . $data['start_minute'];
+                    // }
+                    //
+                    // if($data['finish_minute'] < 10){
+                    //   $data['finish_minute'] = "0" . $data['finish_minute'];
+                    // }
+
                     echo '
                       <tr>
                         <th scope="row">'.$no.'</th>
@@ -43,6 +52,7 @@
             </h1><br>
             <a href="schedule.php" class="btn btn-success">Show All Schedule</a>
             <a href="create.php" class="btn btn-success">Add New Schedule</a><br><br>
+            <a href="#" onclick="alertLaborRules()" class="btn btn-danger">Labor Rules</a>
           </center>
         </div>
       </div>
@@ -52,6 +62,11 @@
 
 
 <script type="text/javascript">
+
+  function alertLaborRules(){
+    var audio = new Audio('alert/rules-start.mp3');
+    audio.play();
+  }
 
   play = false;
 
@@ -79,6 +94,26 @@
       audio.play();
     }
 
+    function alertStartPraktikum(){
+      var audio = new Audio('alert/praktikum-start.mp3');
+      audio.play();
+    }
+
+    function alertFinishPraktikum(){
+      var audio = new Audio('alert/praktikum-finish.mp3');
+      audio.play();
+    }
+
+    function alertStartRapat(){
+      var audio = new Audio('alert/rapat-start.mp3');
+      audio.play();
+    }
+
+    function alertFinishRapat(){
+      var audio = new Audio('alert/rapat-finish.mp3');
+      audio.play();
+    }
+
     $.ajax({
        url : 'controller/json-schedule.php', // your php file
        type : 'GET', // type of the HTTP request
@@ -89,15 +124,48 @@
             if(play == false){
               if(days[now.getDay()] == val['day']){
                 if(now.getHours() == val['start_hour'] && now.getMinutes() == val['start_minute'] && now.getSeconds() < 30){
-                  play = true;
-                  console.log('alarm berbunyi!');
-                  document.getElementById("info").textContent = "Jadwal sekarang: " + val['name'];
-                  alertStart();
+
+                  var str = val['name'];
+
+                  if(str.includes("Praktikum")){
+                    play = true;
+                    console.log('alarm praktikum berbunyi!');
+                    document.getElementById("info").textContent = "Jadwal sekarang: " + val['name'];
+                    alertStartPraktikum();
+                  }else if(str.includes("Rapat")){
+                    play = true;
+                    console.log('alarm rapat berbunyi!');
+                    document.getElementById("info").textContent = "Jadwal sekarang: " + val['name'];
+                    alertStartRapat();
+                  }else{
+                    play = true;
+                    console.log('alarm berbunyi!');
+                    document.getElementById("info").textContent = "Jadwal sekarang: " + val['name'];
+                    alertStart();
+                  }
+
                 }
                 if(now.getHours() == val['finish_hour'] && now.getMinutes() == val['finish_minute'] && now.getSeconds() < 30){
-                  play = true;
-                  console.log('alarm berbunyi!');
-                  alertFinish();
+
+                  var str = val['name'];
+
+                  if(str.includes("Praktikum")){
+                    play = true;
+                    console.log('alarm praktikum berbunyi!');
+                    document.getElementById("info").textContent = "Jadwal sekarang: " + val['name'];
+                    alertFinishPraktikum();
+                  }else if(str.includes("Rapat")){
+                    play = true;
+                    console.log('alarm rapat berbunyi!');
+                    document.getElementById("info").textContent = "Jadwal sekarang: " + val['name'];
+                    alertFinishRapat();
+                  }else{
+                    play = true;
+                    console.log('alarm berbunyi!');
+                    document.getElementById("info").textContent = "Jadwal sekarang: " + val['name'];
+                    alertFinish();
+                  }
+
                 }
               }
             }else{
@@ -140,8 +208,6 @@
           });
        }
     });
-
   }
-
   setInterval(doDate, 1000);
 </script>
